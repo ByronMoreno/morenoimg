@@ -1,8 +1,8 @@
 build:
-	docker build -t morenoimg:latest .
+	docker build -t anitaimg:1.0.1 .
 
 deploy:
-	docker stack deploy --with-registry-auth -c stack.yml quinto
+	docker stack deploy --with-registry-auth -c stack.yml doraemon
 
 rm:
-	docker stack rm quinto
+	docker stack rm doraemon
