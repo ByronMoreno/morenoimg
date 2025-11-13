@@ -59,11 +59,8 @@ jobs:
           mkdir -p ~/deploy
           cd ~/deploy
 
-          #echo "==> Login a GHCR (usar PAT con read:packages)"
-          #echo "${{ secrets.VPS_DEPLOY_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-          #echo "==> Descargando la imagen desde github"
-          docker pull ghcr.io/byronmoreno/pepito:1.0.1
+          # echo "==> Descargando la imagen desde github"
+          # docker pull ghcr.io/byronmoreno/pepito:1.0.1
 
           STACK_NAME="quinto"
           STACK_FILE="stack.yml"
