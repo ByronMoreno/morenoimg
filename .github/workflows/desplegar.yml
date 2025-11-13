@@ -36,25 +36,7 @@ jobs:
       with:
         push: true
         tags: ghcr.io/byronmoreno/pepito:1.0.1
-    
-    - name: 🧾 Mostrar variables básicas (solo locales, no secretos)
-      run: |
-        echo "Probando conexión SSH con:"
-        echo "Host: ${{ secrets.VPS_HOST }}"
-        echo "Usuario: ${{ secrets.VPS_USER }}"
-        echo "Puerto: ${{ secrets.VPS_SSH_PORT }}"
-    - name: 🧪 Probar conexión SSH
-      uses: appleboy/ssh-action@v1
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_SSH_PORT }}
-        script: |
-          echo "✅ Conexión exitosa desde GitHub Actions"
-          hostname
-          whoami
-          uptime
+        
     - name: Copiar stack.yml to VPS (SCP)
       uses: appleboy/scp-action@v1
       with:
@@ -73,22 +55,41 @@ jobs:
         port: ${{ secrets.VPS_SSH_PORT }}
         script: |
           set -e
-            mkdir -p ~/deploy
-            cd ~/deploy
+          # directorio de despliegue
+          mkdir -p ~/deploy
+          cd ~/deploy
 
-            echo "==> Login a GHCR"
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "==> Login a GHCR (usar PAT con read:packages)"
+          echo "${{ secrets.VPS_DEPLOY_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            echo "==> Parar los servicios si existe..."
-            docker stack rm quinto
+          STACK_NAME="quinto"
+          STACK_FILE="stack.yml"
 
+          echo "==> Comprobando si el stack '${STACK_NAME}' existe..."
+          if docker stack ls --format '{{.Name}}' | grep -qw "${STACK_NAME}"; then
+            echo "==> El stack '${STACK_NAME}' existe — procediendo a eliminarlo..."
+            docker stack rm "${STACK_NAME}" || true
+
+            # Esperar hasta que el stack desaparezca (timeout 60s)
+            echo "==> Esperando a que los servicios del stack se detengan (timeout 60s)..."
             SECONDS_WAITED=0
             INTERVAL=5
             TIMEOUT=60
-
-            echo "==> Desplegando stack..."
-            docker stack deploy -c stack.yml --with-registry-auth quinto
-
-            echo "==> Verificando estado..."
-            docker service ls
-            docker stack ps quinto
+            while docker stack ls --format '{{.Name}}' | grep -qw "${STACK_NAME}"; do
+              if [ "$SECONDS_WAITED" -ge "$TIMEOUT" ]; then
+               echo "⚠️ Timeout esperando la eliminación del stack después de ${TIMEOUT}s."
+                break
+              fi
+              echo "  ...esperando ${INTERVAL}s (llevado ${SECONDS_WAITED}s)"
+              sleep $INTERVAL
+              SECONDS_WAITED=$((SECONDS_WAITED + INTERVAL))
+            done
+          else
+            echo "==> No existe el stack '${STACK_NAME}', continuo..."
+          fi
+          echo "==> Desplegando stack '${STACK_NAME}' desde ${STACK_FILE}..."
+          # opción recomendada de posición de flags: --with-registry-auth antes de -c o después
+          docker stack deploy --with-registry-auth -c "${STACK_FILE}" "${STACK_NAME}"
+          echo "==> Verificando estado..."
+          docker service ls
+          docker stack ps "${STACK_NAME}"
