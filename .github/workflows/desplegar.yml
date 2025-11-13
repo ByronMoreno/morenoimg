@@ -59,10 +59,7 @@ jobs:
           mkdir -p ~/deploy
           cd ~/deploy
 
-          # echo "==> Descargando la imagen desde github"
-          # docker pull ghcr.io/byronmoreno/pepito:1.0.1
-
-          STACK_NAME="quinto"
+          STACK_NAME="pepito"
           STACK_FILE="stack.yml"
 
           echo "==> Comprobando si el stack '${STACK_NAME}' existe..."

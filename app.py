@@ -143,7 +143,7 @@ PAGE = """
         Flask Studio
       </a>
 
-      <h1 id="title">Bienvenido a tu página Flask</h1>
+      <h1 id="title">Bienvenido a mi pagina BM</h1>
       <p class="lead">Plantilla minimalista, responsive y lista para personalizar. Incluye formulario de contacto (simulado) y estilos modernos sin archivos externos.</p>
 
       <div class="features" role="list">
