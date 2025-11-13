@@ -64,7 +64,7 @@ jobs:
         port: ${{ secrets.VPS_SSH_PORT }}
         source: "stack.yml"
         target: "/home/${{ secrets.VPS_USER }}/deploy"
-    - name: 🧪 Probar conexión SSH
+    - name: 🧪 Desplegar los servicios en la web
       uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -80,7 +80,7 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             echo "==> Parar los servicios si existe..."
-            doccker stack rm quinto
+            docker stack rm quinto
 
             SECONDS_WAITED=0
             INTERVAL=5
