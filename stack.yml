@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
 pepito:
-  image: pepitoimg:1.0.2
+  image: ghcr.io/byronmoreno/pepito:1.0.1
     deploy:
       replicas: 1
       labels:
