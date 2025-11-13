@@ -1,27 +1,26 @@
 version: "3.9"
 
 services:
-pepito:
-  image: ghcr.io/byronmoreno/pepito:1.0.1
+  pepito:
+    image: ghcr.io/byronmoreno/pepito:1.0.1
     deploy:
       replicas: 1
       labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.pepito.entrypoints=http"
-        - "traefik.http.routers.pepito.rule=Host(`pepito.byronrm.com`)"
-        - "traefik.http.middlewares.pepito-https-redirect.redirectscheme.scheme=https"
-        - "traefik.http.routers.pepito.middlewares=pepito-https-redirect"
-        - "traefik.http.routers.pepito-secure.entrypoints=https"
-        - "traefik.http.routers.pepito-secure.rule=Host(`pepito.byronrm.com`)"
-        - "traefik.http.routers.pepito-secure.tls=true"
-        - "traefik.http.routers.pepito-secure.tls.certresolver=http"
-        - "traefik.http.routers.pepito-secure.service=pepito"
-        - "traefik.http.services.pepito.loadbalancer.server.port=1001"
-        - "traefik.docker.network=traefik-public"
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.pepito.entrypoints=http'
+        - 'traefik.http.routers.pepito.rule=Host(`pepito.byronrm.com`)'
+        - 'traefik.http.middlewares.pepito-https-redirect.redirectscheme.scheme=https'
+        - 'traefik.http.routers.pepito.middlewares=pepito-https-redirect'
+        - 'traefik.http.routers.pepito-secure.entrypoints=https'
+        - 'traefik.http.routers.pepito-secure.rule=Host(`pepito.byronrm.com`)'
+        - 'traefik.http.routers.pepito-secure.tls=true'
+        - 'traefik.http.routers.pepito-secure.tls.certresolver=http'
+        - 'traefik.http.routers.pepito-secure.service=pepito'
+        - 'traefik.http.services.pepito.loadbalancer.server.port=1001'
+        - 'traefik.docker.network=traefik-public'
     networks:
       - traefik-public
 
 networks:
   traefik-public:
     external: true
-
