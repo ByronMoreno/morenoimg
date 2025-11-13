@@ -1,22 +1,22 @@
 version: "3.9"
 
 services:
-  juanito:
-    image: anitaimg:1.0.1
+pepito:
+    image: pepitoimg:1.0.2
     deploy:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.juanito.entrypoints=http"
-        - "traefik.http.routers.juanito.rule=Host(`juanito.byronrm.com`)"
-        - "traefik.http.middlewares.juanito-https-redirect.redirectscheme.scheme=https"
-        - "traefik.http.routers.juanito.middlewares=juanito-https-redirect"
-        - "traefik.http.routers.juanito-secure.entrypoints=https"
-        - "traefik.http.routers.juanito-secure.rule=Host(`juanito.byronrm.com`)"
-        - "traefik.http.routers.juanito-secure.tls=true"
-        - "traefik.http.routers.juanito-secure.tls.certresolver=http"
-        - "traefik.http.routers.juanito-secure.service=juanito"
-        - "traefik.http.services.juanito.loadbalancer.server.port=80"
+        - "traefik.http.routers.pepito.entrypoints=http"
+        - "traefik.http.routers.pepito.rule=Host(`pepito.byronrm.com`)"
+        - "traefik.http.middlewares.pepito-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.pepito.middlewares=pepito-https-redirect"
+        - "traefik.http.routers.pepito-secure.entrypoints=https"
+        - "traefik.http.routers.pepito-secure.rule=Host(`pepito.byronrm.com`)"
+        - "traefik.http.routers.pepito-secure.tls=true"
+        - "traefik.http.routers.pepito-secure.tls.certresolver=http"
+        - "traefik.http.routers.pepito-secure.service=pepito"
+        - "traefik.http.services.pepito.loadbalancer.server.port=1001"
         - "traefik.docker.network=traefik-public"
     networks:
       - traefik-public

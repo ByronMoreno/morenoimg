@@ -1,8 +1,8 @@
 build:
-	docker build -t anitaimg:1.0.1 .
+	docker build -t pepitoimg:1.0.2 .
 
 deploy:
-	docker stack deploy --with-registry-auth -c stack.yml doraemon
+	docker stack deploy --with-registry-auth -c stack.yml ecuador
 
 rm:
-	docker stack rm doraemon
+	docker stack rm ecuador

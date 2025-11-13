@@ -218,4 +218,4 @@ def contact():
 if __name__ == "__main__":
     # Nota: para escuchar en el puerto 80 normalmente necesitas permisos de root
     # Ejecuta: sudo python3 app.py   OR usa Docker y mappea el puerto 80
-    app.run(host="0.0.0.0", port=80, debug=False)
+    app.run(host="0.0.0.0", port=1001, debug=False)
