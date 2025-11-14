@@ -59,6 +59,9 @@ jobs:
           mkdir -p ~/deploy
           cd ~/deploy
 
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u byronmoreno --password-stdin
+          docker pull ghcr.io/byronmoreno/pepito:1.0.1
+
           STACK_NAME="pepito"
           STACK_FILE="stack.yml"
 
